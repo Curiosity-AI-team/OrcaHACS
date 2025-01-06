@@ -1,8 +1,10 @@
 {
-    "domain": "my_custom_integration",
-    "name": "My Custom Integration",
-    "documentation": "https://github.com/yourname/my_custom_integration",
+    "domain": "orca_dev",
+    "name": "Orca Dev Integration",
+    "version": "0.0.1",
+    "documentation": "https://github.com/yourusername/orca_dev",
     "requirements": [],
-    "codeowners": ["@yourgithubusername"],
-    "version": "1.0.0"
-}
+    "dependencies": [],
+    "codeowners": [],
+    "iot_class": "local_polling"
+  }
