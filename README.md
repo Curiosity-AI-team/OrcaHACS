@@ -1,2 +1,2 @@
 # OrcaHACS
-Home Assistant OrcaRL custom integration
+Home Assistant OrcaVA custom integration

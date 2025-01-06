@@ -1,0 +1,8 @@
+{
+    "domain": "my_custom_integration",
+    "name": "My Custom Integration",
+    "documentation": "https://github.com/yourname/my_custom_integration",
+    "requirements": [],
+    "codeowners": ["@yourgithubusername"],
+    "version": "1.0.0"
+}
