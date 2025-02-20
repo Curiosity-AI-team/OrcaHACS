@@ -1,4 +1,4 @@
 # https://developers.home-assistant.io/docs/add-ons/repository#repository-configuration
 name: OrcaVA repository
 url: 'https://github.com/Curiosity-AI-team/OrcaHACS'
-maintainer: Awesome Maintainer <awesome@example.com>
+maintainer: TPODAvia

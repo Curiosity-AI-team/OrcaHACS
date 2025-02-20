@@ -1,0 +1,12 @@
+{
+    "domain": "hello_integration",
+    "name": "Hello Integration",
+    "version": "1.0",
+    "documentation": "https://github.com/Curiosity-AI-team/OrcaHACS",
+    "dependencies": [],
+    "codeowners": ["@TPODAvia"],
+    "requirements": [],
+    "config_flow": false,
+    "iot_class": "cloud_polling"
+  }
+  

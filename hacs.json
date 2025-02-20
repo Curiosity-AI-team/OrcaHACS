@@ -1,7 +1,7 @@
 {
-    "name": "My Custom Integration",
+    "name": "OrcaVA Integration",
     "content_in_root": false,
-    "domains": ["my_custom_integration"],
+    "domains": ["orcava_integration"],
     "homeassistant": "2023.1.0",
     "render_readme": true
 }
