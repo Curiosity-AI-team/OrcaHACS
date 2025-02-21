@@ -4,71 +4,44 @@
 
 OrcaHACS is a custom integration that bridges Home Assistant with the OrcaVA service, allowing you to integrate the OrcaVA system into your Home Assistant environment seamlessly. It enables communication between Home Assistant and OrcaVA using FastAPI, HTTP requests, and other backend services, making it possible to manage OrcaVA's data and control its actions directly from Home Assistant.
 
-## Features
-
-- Easy integration with Home Assistant.
-- Provides REST API endpoints using FastAPI.
-- Fetches and updates data asynchronously using `httpx`.
-- Works seamlessly within Home Assistant's UI.
-
 ---
 
 ## Installation
 
-### Prerequisites
+> Home Assistant version requirement:
+>
+> - Core $\geq$ 2024.4.4
+> - Operating System $\geq$ 13.0
 
-- Home Assistant 2023.1 or later (works in virtual environments).
-- **HACS** (Home Assistant Community Store) installed and set up.
+### Method 1: Git clone from GitHub
 
-### Installing OrcaHACS via HACS
+```bash
+cd config
+git clone https://github.com/Curiosity-AI-team/OrcaHACS.git
+cd OrcaHACS
+./install.sh /config
+```
 
-To install the OrcaHACS integration in Home Assistant via HACS:
+We recommend this installation method, for it is convenient to switch to a tag when updating `orca_bridge` to a certain version.
 
-1. **Add the OrcaHACS repository to HACS**:
+For example, update to version v1.0.0
 
-   - Open Home Assistant and go to **HACS** in the left sidebar.
-   - Click the **+** button in the bottom-right corner to add a new repository.
-   - Paste the following URL into the repository field:
-   
-     ```
-     https://github.com/Curiosity-AI-team/OrcaHACS
-     ```
-   - Select **Integration** as the type of repository.
+```bash
+cd config/orca_bridge
+git fetch
+git checkout v1.0.0
+./install.sh /config
+```
 
-2. **Install the integration**:
+### Method 2: [HACS](https://hacs.xyz/)
 
-   - After the repository is added, locate **OrcaVA Integration** in the HACS list.
-   - Click **Install** to begin the installation.
-   - Wait for HACS to finish the installation process.
+HACS > Overflow Menu > Custom repositories > Repository: https://github.com/Curiosity-AI-team/OrcaHACS.git & Category or Type: Integration > ADD > OrcaVA Integration in New or Available for download section of HACS > DOWNLOAD
 
-3. **Restart Home Assistant**:
+> OrcaVA Integration has not been added to the HACS store as a default yet. It's coming soon.
 
-   - Once the installation is complete, restart Home Assistant to load the new integration.
-   
-     ```
-     hass --restart
-     ```
+### Method 3: Manually installation via [Samba](https://github.com/home-assistant/addons/tree/master/samba) / [FTPS](https://github.com/hassio-addons/addon-ftp)
 
----
-
-### Manual Installation (Without HACS)
-
-If you prefer to install the integration manually:
-
-1. Navigate to your Home Assistant configuration directory:
-   ```bash
-   cd ~/.homeassistant/custom_components
-   ```
-
-2. Clone the repository or download the files for the **orca_bridge** integration:
-   ```bash
-   git clone https://github.com/Curiosity-AI-team/OrcaHACS.git orca_bridge
-   ```
-
-3. Restart Home Assistant to load the integration:
-   ```bash
-   hass --restart
-   ```
+Download and copy `custom_components/orca_bridge` folder to `config/custom_components` folder in your Home Assistant.
 
 ---
 

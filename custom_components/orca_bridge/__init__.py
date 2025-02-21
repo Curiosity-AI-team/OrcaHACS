@@ -5,43 +5,32 @@ from homeassistant.helpers.typing import ConfigType
 from homeassistant.components.http import HomeAssistantView
 
 _LOGGER = logging.getLogger(__name__)
-
-DOMAIN = "orca_dev"
-
-async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
-    """Set up the orca_dev integration (YAML-based)."""
-    hass.http.register_view(OrcaDevReceiveView())
-    _LOGGER.info("orca_dev integration is set up and HTTP view is registered.")
-    return True
-
-async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Set up the orca_dev integration from UI config entries (if implemented)."""
-    # If you implement a config flow, you would initialize your integration here.
-    hass.http.register_view(OrcaDevReceiveView())
-    _LOGGER.info("orca_dev integration is set up via config entry and HTTP view is registered.")
-    return True
-
+DOMAIN = "orca_bridge"
 
 class OrcaDevReceiveView(HomeAssistantView):
-    """Expose a simple POST endpoint for receiving text and sending it to HA Assist."""
-
-    url = "/api/orca_dev/receive_text"   # URL path to POST to
-    name = "api:orca_dev:receive_text"   # Name used internally
-    requires_auth = False                # Set to True if you require authentication
+    """Expose a POST endpoint for receiving text and system status updates."""
+    url = "/api/orca_bridge/receive_text"
+    name = "api:orca_bridge:receive_text"
+    requires_auth = False
 
     async def post(self, request):
-        """Handle POST requests to receive JSON and forward text to conversation.process."""
         hass = request.app["hass"]
-
         try:
             data = await request.json()
             text = data.get("text", "")
+            battery = data.get("battery", None)
+            error_code = data.get("error_code", None)
+
             if not text:
-                return self.json({"error": "No 'text' key found in JSON"}, status=400)
+                return self.json({"error": "Missing 'text' in JSON"}, status=400)
 
-            _LOGGER.info("Received text from external script: %s", text)
+            if battery is not None:
+                hass.data[DOMAIN]["battery"] = battery
+            if error_code is not None:
+                hass.data[DOMAIN]["last_error"] = error_code
 
-            # Call the conversation service to inject text into Assist
+            _LOGGER.info(f"Received text: {text}, Battery: {battery}, Error Code: {error_code}")
+
             await hass.services.async_call(
                 "conversation",
                 "process",
@@ -50,7 +39,21 @@ class OrcaDevReceiveView(HomeAssistantView):
             )
 
             return self.json({"status": "ok", "received_text": text})
-
         except Exception as err:
-            _LOGGER.error("Error in orca_dev endpoint: %s", err)
+            _LOGGER.error("Error in orca_bridge API: %s", err)
             return self.json({"error": str(err)}, status=500)
+
+async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
+    """Set up the orca_bridge integration via YAML."""
+    hass.http.register_view(OrcaDevReceiveView())
+    _LOGGER.info("orca_bridge integration (YAML) is set up and HTTP view is registered.")
+    # Initialize integration data
+    hass.data.setdefault(DOMAIN, {"battery": 100, "status": "Running", "last_error": None})
+    return True
+
+async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+    """Set up orca_bridge from a config entry (UI)."""
+    hass.http.register_view(OrcaDevReceiveView())
+    _LOGGER.info("orca_bridge integration set up via config entry.")
+    hass.data.setdefault(DOMAIN, {"battery": 100, "status": "Running", "last_error": None})
+    return True

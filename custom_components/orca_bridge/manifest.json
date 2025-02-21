@@ -1,15 +1,16 @@
 {
-    "domain": "orca_bridge",
-    "name": "OrcaVA Integration",
-    "version": "0.0.1",
-    "documentation": "https://github.com/Curiosity-AI-team/OrcaHACS",
-    "requirements": [
-      "uvicorn",
-      "requests",
-      "fastapi",
-      "httpx"
-    ],
-    "dependencies": [],
-    "codeowners": ["@TPODAvia"],
-    "iot_class": "local_polling"
-  }
+  "domain": "orca_bridge",
+  "name": "Orca Bridge",
+  "version": "1.0.0",
+  "documentation": "https://github.com/Curiosity-AI-team/OrcaHACS",
+  "requirements": [
+    "uvicorn",
+    "requests",
+    "fastapi",
+    "httpx"
+  ],
+  "dependencies": [],
+  "codeowners": ["@TPODAvia"],
+  "config_flow": true,
+  "iot_class": "local_polling"
+}

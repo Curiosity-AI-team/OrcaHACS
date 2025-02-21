@@ -1,0 +1,6 @@
+send_text:
+  description: "Send a text message to the Orca Bridge integration"
+  fields:
+    text:
+      description: "The text to send"
+      example: "Hello from Home Assistant"
