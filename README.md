@@ -19,7 +19,7 @@ OrcaHACS is a custom integration that bridges Home Assistant with the OrcaVA ser
 cd config
 git clone https://github.com/Curiosity-AI-team/OrcaHACS.git
 cd OrcaHACS
-./install.sh /config
+bash install.sh $HOME/.homeassistant
 ```
 
 We recommend this installation method, for it is convenient to switch to a tag when updating `orca_bridge` to a certain version.

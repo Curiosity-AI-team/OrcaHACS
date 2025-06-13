@@ -1,0 +1,16 @@
+sensor:
+  - platform: rest
+    name: Orcava Status
+    # adjust host/port/path to your setup
+    resource: http://localhost:8123/api/orca_bridge/orcava_status
+    # we don't care about the top-level "status" key in the JSON,
+    # so we dig one level down in the template.
+    value_template: "{{ value_json.status }}"
+    json_attributes_path: "$.status"
+    json_attributes:
+      - battery
+      - last_error
+      - status
+      - last_command
+    # refresh every 30s (optional)
+    scan_interval: 30
