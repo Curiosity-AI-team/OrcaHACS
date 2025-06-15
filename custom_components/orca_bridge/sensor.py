@@ -1,31 +1,32 @@
-import logging
-from homeassistant.components.sensor import SensorEntity
+from homeassistant.helpers.entity import Entity
+from homeassistant.helpers.update_coordinator import CoordinatorEntity
+from .const import DOMAIN
 
-_LOGGER = logging.getLogger(__name__)
-DOMAIN = "orca_bridge"
+async def async_setup_entry(hass, entry, async_add_entities):
+    """Set up the dashboard sensor."""
+    coord = hass.data[DOMAIN]["coordinator"]
+    async_add_entities([OrcaDashboardSensor(coord)], True)
 
-class SystemStatusSensor(SensorEntity):
-    """Sensor to monitor system status, battery, and errors."""
+class OrcaDashboardSensor(CoordinatorEntity, Entity):
+    """A single sensor that holds your dashboard JSON as attributes."""
 
-    def __init__(self, hass, icon):
-        self._hass = hass
-        self._attr_name = "System Status"
-        self._attr_icon = icon
-        self._attr_native_value = "Running"
+    def __init__(self, coordinator):
+        super().__init__(coordinator)
+        self._attr_name = "Orca Dashboard"
+        self._attr_unique_id = "orca_bridge_dashboard"
 
     @property
     def state(self):
-        return self._attr_native_value
+        """Use world_name as the sensor’s state."""
+        data = self.coordinator.data or {}
+        return data.get("world_name", "unknown")
 
-    async def async_update(self):
-        """Update sensor state."""
-        self._attr_native_value = (
-            "Running" if self._hass.data[DOMAIN]["battery"] > 20 else "Warning"
-        )
-        _LOGGER.info("System Status Sensor Updated: %s", self._attr_native_value)
-
-async def async_setup_entry(hass, entry, async_add_entities):
-    """Set up sensor platform from a config entry."""
-    icon = entry.data.get("icon", "mdi:server")
-    hass.data.setdefault(DOMAIN, {"battery": 100, "status": "Running", "last_error": None})
-    async_add_entities([SystemStatusSensor(hass, icon)])
+    @property
+    def extra_state_attributes(self):
+        """Expose the full JSON under attributes."""
+        attrs = dict(self.coordinator.data or {})
+        # include any replies from the chat service
+        last = self.hass.data[DOMAIN].get("last_response")
+        if last is not None:
+            attrs["last_response"] = last
+        return attrs

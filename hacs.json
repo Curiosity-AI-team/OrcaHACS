@@ -1,5 +1,4 @@
 {
     "name": "OrcaVA Integration",
-    "homeassistant": "2024.4.4",
-    "hacs": "1.34.0"
+    "homeassistant": "2024.1"
 }
